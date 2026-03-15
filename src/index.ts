@@ -13,7 +13,7 @@ dotenv.config();
 
 // Initialize express app
 const app: Express = express();
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
 connectDB();
@@ -72,11 +72,11 @@ app.use((err: Error, req: Request, res: Response, next: any) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// // Start server
+// app.listen(PORT, () => {
+//     console.log(`🚀 Server is running on port ${PORT}`);
+//     console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+// });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err: Error) => {
@@ -84,3 +84,6 @@ process.on('unhandledRejection', (err: Error) => {
     // Close server & exit process
     process.exit(1);
 });
+
+
+export default app;
