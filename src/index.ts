@@ -21,8 +21,22 @@ connectDB();
 // Middleware
 app.use(helmet()); // Security headers
 app.use(morgan('dev')); // Logging
+// Build list of allowed origins
+const allowedOrigins = [
+    'https://www.msmeventsmanagement.com',
+    'https://msmeventsmanagement.com',
+    ...(process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map(o => o.trim()) : []),
+];
+
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, Postman, same-origin)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        callback(new Error(`CORS policy does not allow access from origin: ${origin}`));
+    },
     credentials: true,
 })); // CORS
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies with size limit
